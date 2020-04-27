@@ -1,0 +1,94 @@
+/**
+ * Allows creation of a Room object with properties that can be queried by the system based on guest criteria.
+ * 
+ * @author Van Chadrick Villondo, Jason Cain, Marcus Goodwin
+ * @date Initial Date of Creation: 04/26/2020
+ */
+public class Room {
+	
+	
+	//Room attributes
+	int roomNum;
+	int numberOfGuests;
+	int numberOfBeds;
+	String checkInDate;
+	String checkOutDate;
+	boolean isSmokingFriendly;
+	boolean isPetFriendly;
+	
+	
+	/**
+	 * Default Room constructor if no parameters are passed for creation
+	 */
+	public Room() {
+		roomNum = 0;
+		numberOfGuests = 0;
+		numberOfBeds = 0;
+		checkInDate = "";
+		checkOutDate = "";
+		isSmokingFriendly = true;
+		isPetFriendly = true;
+	}
+	
+	
+	/**
+	 * Room constructor for rooms with specific criteria
+	 * 
+	 * @param rn - room number
+	 * @param nOG - number of guests the room can accommodate
+	 * @param nOB - number of beds in the room
+	 * @param cID - check in date in the form of MM/DD/YYYY
+	 * @param cOD - check out date in the form of MM/DD/YYYY
+	 * @param iSF - identifier for if the room is smoking-friendly
+	 * @param iPF - identifier for if the room is pet-friendly
+	 */
+	public Room(int rn, int nOG, int nOB, String cID, String cOD, boolean iSF, boolean iPF) {
+		roomNum = rn;
+		numberOfGuests = nOG;
+		numberOfBeds = nOB;
+		checkInDate = cID;
+		checkOutDate = cOD;
+		isSmokingFriendly = iSF;
+		isPetFriendly = iPF;
+	}
+	
+	
+	/**
+	 * Get method for number of guests
+	 * 
+	 * @return the number of guests the room can accommodate
+	 */
+	public int getGuests() {
+		return numberOfGuests;
+	}
+	
+	
+	/**
+	 * Get method for number of beds
+	 * 
+	 * @return the number of beds in the room
+	 */
+	public int getBeds() {
+		return numberOfBeds;
+	}
+	
+	
+	/**
+	 * Get method for check in date for the room
+	 * 
+	 * @return the check in date the room is occupied for
+	 */
+	public String getCheckIn() {
+		return checkInDate;
+	}
+	
+	
+	/**
+	 * Get method for check out date for the room
+	 * 
+	 * @return the check out date when the room will be available again
+	 */
+	public String getCheckOut() {
+		return checkOutDate;
+	}
+}
