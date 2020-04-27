@@ -76,7 +76,8 @@ public class Room {
 	/**
 	 * Get method for check in date for the room
 	 * 
-	 * @return the check in date the room is occupied for
+	 * @return the check in date the room occupancy begins
+	 * @room will be unavailable on this day
 	 */
 	public String getCheckIn() {
 		return checkInDate;
@@ -86,7 +87,8 @@ public class Room {
 	/**
 	 * Get method for check out date for the room
 	 * 
-	 * @return the check out date when the room will be available again
+	 * @return the check out date when the room occupancy ends
+	 * @room will be available again on this day
 	 */
 	public String getCheckOut() {
 		return checkOutDate;
