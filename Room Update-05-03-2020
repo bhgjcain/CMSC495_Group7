@@ -6,7 +6,6 @@
  */
 public class Room {
 	
-	
 	//Room attributes
 	int roomNum;
 	int numberOfGuests;
@@ -16,7 +15,6 @@ public class Room {
 	boolean isSmokingFriendly;
 	boolean isPetFriendly;
 	boolean isVacant;
-	
 	
 	/**
 	 * Default Room constructor if no parameters are passed for creation
@@ -31,7 +29,6 @@ public class Room {
 		isPetFriendly = true;
 		isVacant = true;
 	}
-	
 	
 	/**
 	 * Room constructor for rooms with specific criteria
@@ -55,6 +52,14 @@ public class Room {
 		isVacant = v;
 	}
 	
+	/**
+	 * Get method for room number
+	 * 
+	 * @return the specified room number
+	 */
+	public int getRoomNumber() {
+		return roomNum;
+	}
 	
 	/**
 	 * Get method for number of guests
@@ -65,7 +70,6 @@ public class Room {
 		return numberOfGuests;
 	}
 	
-	
 	/**
 	 * Get method for number of beds
 	 * 
@@ -74,7 +78,6 @@ public class Room {
 	public int getBeds() {
 		return numberOfBeds;
 	}
-	
 	
 	/**
 	 * Get method for check in date for the room
@@ -86,7 +89,6 @@ public class Room {
 		return checkInDate;
 	}
 	
-	
 	/**
 	 * Set method for check in date
 	 * 
@@ -95,7 +97,6 @@ public class Room {
 	public void setCheckIn(String cI) {
 		checkInDate = cI;
 	}
-	
 	
 	/**
 	 * Get method for check out date for the room
@@ -107,7 +108,6 @@ public class Room {
 		return checkOutDate;
 	}
 	
-	
 	/**
 	 * Set method for check out date
 	 * 
@@ -116,7 +116,6 @@ public class Room {
 	public void setCheckOut(String cO) {
 		checkOutDate = cO;
 	}
-	
 	
 	/**
 	 * Set method for vacancy status
