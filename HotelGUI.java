@@ -12,7 +12,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-
+import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.DefaultComboBoxModel;
@@ -830,7 +830,9 @@ public class HotelGUI {
 		
 		JTextPane resultsList = new JTextPane();
 		resultsList.setEditable(false);
-		resultsList.setText("");
+		
+		resultsList.setText(""); // * * * search results should be displayed here * * *
+		
 		resultsList.setFont(new Font("Arial", Font.PLAIN, 14));
 		resultsScrollPane.setViewportView(resultsList);
 		
