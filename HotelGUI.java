@@ -6,7 +6,7 @@
  * Revision 1 (MG): Initial creation
  * Revision 2 (MG): Updated frame titles and commenting
  * Revision 3 (MG): Added check in/out date to search frame & more comments
- *
+ * Revision 4 (MG): Added search results frame
  */
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -61,6 +61,8 @@ public class HotelGUI {
 	private JFrame cancelFrame; // Delete reservation frame
 	private JTextField userCancelField;
 	private JTextField roomCancelField;
+	
+	private JFrame resultsFrame; // Search results frame
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -142,7 +144,7 @@ public class HotelGUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-				// code to be added (validate information through database)
+				// * * * code to be added (validate information through database) * * *
 				
 				
 				if (!userField.getText().equals("") && !pwField.getText().equals("")) { 
@@ -357,7 +359,7 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// code to be added (add registry to database)
+				// * * * code to be added (add registry to database) * * *
 				// create error if registry already exists
 				
 				regFrame.dispose();
@@ -540,7 +542,7 @@ public class HotelGUI {
 				boolean optSmoking;
 				boolean optPets;
 				
-				// need to declare dates for search
+				// * * * need to declare dates for search * * *
 				
 				if (guestCombo.getSelectedIndex() == 0) {
 					selectedGuests = 2;
@@ -571,9 +573,10 @@ public class HotelGUI {
 				}
 				
 				
-				// code to be added (perform search)
+				// * * * code to be added (perform search) * * *
 				
 				
+				initializeResults();
 			}
 		});
 		
@@ -717,7 +720,7 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// code to be added (make sure room is available and add reservation)
+				// * * * code to be added (make sure room is available and add reservation) * * *
 				
 				bookingFrame.dispose();
 			}
@@ -794,7 +797,7 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// code to be added (make sure reservation is valid & delete it)
+				// * * * code to be added (make sure reservation is valid & delete it) * * *
 				// create error if reservation is not valid
 				
 			}
@@ -805,5 +808,64 @@ public class HotelGUI {
 				cancelFrame.dispose();
 			}
 		});
+	}
+	
+	/*
+	 * Show search results frame
+	 */
+	private void initializeResults() {
+		resultsFrame = new JFrame();
+		resultsFrame.getContentPane().setBackground(Color.DARK_GRAY);
+		resultsFrame.getContentPane().setLayout(null);
+		JLabel lblNewLabel = new JLabel("Results");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(145, 20, 90, 30);
+		resultsFrame.getContentPane().add(lblNewLabel);
+		
+		JScrollPane resultsScrollPane = new JScrollPane();
+		resultsScrollPane.setBounds(70, 60, 240, 200);
+		resultsFrame.getContentPane().add(resultsScrollPane);
+		
+		JTextPane resultsList = new JTextPane();
+		resultsList.setEditable(false);
+		resultsList.setText("");
+		resultsList.setFont(new Font("Arial", Font.PLAIN, 14));
+		resultsScrollPane.setViewportView(resultsList);
+		
+		JButton goBookButton = new JButton("Go to Booking");
+		goBookButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		goBookButton.setBounds(60, 295, 150, 30);
+		resultsFrame.getContentPane().add(goBookButton);
+		
+		JButton goCancelButton = new JButton("Cancel");
+		goCancelButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		goCancelButton.setBounds(220, 295, 100, 30);
+		resultsFrame.getContentPane().add(goCancelButton);
+		resultsFrame.setBounds(screenX, screenY, 400, 400);
+		resultsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		resultsFrame.setResizable(false);
+		resultsFrame.setVisible(true);
+		
+		/*
+		 * Results frame action listeners
+		 */
+		goBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				searchFrame.dispose();
+				resultsFrame.dispose();
+				initializeBooking();
+			}
+		});
+		
+		goCancelButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resultsFrame.dispose();
+			}
+		});
+		
 	}
 }
