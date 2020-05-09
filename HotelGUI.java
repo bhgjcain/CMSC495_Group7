@@ -2,7 +2,10 @@
  * GUI class.  This class will provide the interface for our system.
  * Authors: Jason Cain, Van Chadrick Villondo, Marcus Goodwin
  * Date: 05/07/2020
- * 
+ *
+ * Revision 1 (MG): Initial creation
+ * Revision 2 (MG): Updated frame titles and commenting
+ *
  */
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -129,10 +132,12 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// Make sure form is not blank (needs to be updated to work with database)
 				
-				if (!userField.getText().equals("") && !pwField.getText().equals("")) {
-					initializeMenu();
+				// code to be added (validate information through database)
+				
+				
+				if (!userField.getText().equals("") && !pwField.getText().equals("")) { 
+					initializeMenu(); // only logs in if form is not blank
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Invalid Information", "Error", JOptionPane.ERROR_MESSAGE);
@@ -159,6 +164,8 @@ public class HotelGUI {
 		hotelFrame = new JFrame();
 		hotelFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		hotelFrame.getContentPane().setLayout(null);
+		hotelFrame.setResizable(false);
+		hotelFrame.setTitle("Hotel Reservation System");
 		
 		JLabel optionLabel = new JLabel("Choose an Option");
 		optionLabel.setForeground(Color.WHITE);
@@ -218,6 +225,8 @@ public class HotelGUI {
 		regFrame = new JFrame();
 		regFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		regFrame.getContentPane().setLayout(null);
+		regFrame.setResizable(false);
+		regFrame.setTitle("Hotel Reservation System");
 		
 		JLabel regLabel = new JLabel("Register Account");
 		regLabel.setForeground(Color.WHITE);
@@ -340,6 +349,7 @@ public class HotelGUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				// code to be added (add registry to database)
+				// create error if registry already exists
 				
 				regFrame.dispose();
 				initializeMenu();
@@ -361,6 +371,8 @@ public class HotelGUI {
 		searchFrame = new JFrame();
 		searchFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		searchFrame.getContentPane().setLayout(null);
+		searchFrame.setResizable(false);
+		searchFrame.setTitle("Hotel Reservation System");
 		
 		JLabel searchLabel = new JLabel("Search for a Room");
 		searchLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -448,6 +460,7 @@ public class HotelGUI {
 		guestCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// If user selects 4 guests, only 2 bed option can be chosen
 				if (guestCombo.getSelectedIndex() == 1) {
 					radioOne.setSelected(false);
 					radioOne.setEnabled(false);
@@ -482,8 +495,42 @@ public class HotelGUI {
 		doSearchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int selectedGuests;
+				int selectedBeds;
+				boolean optSmoking;
+				boolean optPets;
+				
+				if (guestCombo.getSelectedIndex() == 0) {
+					selectedGuests = 2;
+				}
+				else if (guestCombo.getSelectedIndex() == 1) {
+					selectedGuests = 4;
+				}
+				
+				if (radioOne.isSelected()) {
+					selectedBeds = 1;
+				}
+				else if (radioTwo.isSelected()) {
+					selectedBeds = 2;
+				}
+				
+				if (smokingCombo.getSelectedIndex() == 0) {
+					optSmoking = true;
+				}
+				else if (smokingCombo.getSelectedIndex() == 1) {
+					optSmoking = false;
+				}
+				
+				if (petCombo.getSelectedIndex() == 0) {
+					optPets = true;
+				}
+				else if (petCombo.getSelectedIndex() == 1) {
+					optPets = false;
+				}
+				
 				
 				// code to be added (perform search)
+				
 				
 			}
 		});
@@ -503,6 +550,8 @@ public class HotelGUI {
 		bookingFrame = new JFrame();
 		bookingFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		bookingFrame.getContentPane().setLayout(null);
+		bookingFrame.setResizable(false);
+		bookingFrame.setTitle("Hotel Reservation System");
 		
 		JLabel makeResLabel = new JLabel("Make a Reservation");
 		makeResLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -626,7 +675,7 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				// code to be added (add room reservation)
+				// code to be added (make sure room is available and add reservation)
 				
 				bookingFrame.dispose();
 			}
@@ -647,6 +696,8 @@ public class HotelGUI {
 		cancelFrame = new JFrame();
 		cancelFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		cancelFrame.getContentPane().setLayout(null);
+		cancelFrame.setResizable(false);
+		cancelFrame.setTitle("Hotel Reservation System");
 		
 		JLabel cancelLabel = new JLabel("Cancel Reservation");
 		cancelLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -702,6 +753,7 @@ public class HotelGUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				// code to be added (make sure reservation is valid & delete it)
+				// create error if reservation is not valid
 				
 			}
 		});
