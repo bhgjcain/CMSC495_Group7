@@ -5,6 +5,7 @@
  *
  * Revision 1 (MG): Initial creation
  * Revision 2 (MG): Updated frame titles and commenting
+ * Revision 3 (MG): Added check in/out date to search frame & more comments
  *
  */
 import java.awt.EventQueue;
@@ -32,11 +33,14 @@ public class HotelGUI {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int screenX = screenSize.width/3;
 	private int screenY = screenSize.height/4;
-	private JFrame loginFrame;
+	
+	private JFrame loginFrame; // Login frame
 	private JTextField userField;
 	private JPasswordField pwField;
-	private JFrame hotelFrame;
-	private JFrame regFrame;
+	
+	private JFrame hotelFrame; // Main menu frame
+	
+	private JFrame regFrame; // Register frame
 	private JTextField usernameField;
 	private JPasswordField passField;
 	private JTextField firstField;
@@ -44,12 +48,17 @@ public class HotelGUI {
 	private JTextField addressField;
 	private JTextField phoneField;
 	private JTextField emailField;
-	private JFrame searchFrame;
-	private JFrame bookingFrame;
+	
+	private JFrame searchFrame; // Search rooms frame
+	private JTextField searchInField;
+	private JTextField searchOutField;
+	
+	private JFrame bookingFrame; // Make a reservation frame
 	private JTextField rmNumberField;
 	private JTextField checkInField;
 	private JTextField checkOutField;
-	private JFrame cancelFrame;
+	
+	private JFrame cancelFrame; // Delete reservation frame
 	private JTextField userCancelField;
 	private JTextField roomCancelField;
 	
@@ -430,27 +439,58 @@ public class HotelGUI {
 		searchFrame.getContentPane().add(petLabel);
 		
 		JComboBox smokingCombo = new JComboBox();
-		smokingCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No"}));
+		smokingCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No", "Either"}));
 		smokingCombo.setFont(new Font("Arial", Font.PLAIN, 16));
 		smokingCombo.setBounds(260, 100, 90, 30);
 		searchFrame.getContentPane().add(smokingCombo);
 		
 		JComboBox petCombo = new JComboBox();
-		petCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No"}));
+		petCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No", "Either"}));
 		petCombo.setFont(new Font("Arial", Font.PLAIN, 16));
 		petCombo.setBounds(260, 180, 90, 30);
 		searchFrame.getContentPane().add(petCombo);
 		
 		JButton doSearchButton = new JButton("Search");
 		doSearchButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		doSearchButton.setBounds(115, 245, 90, 30);
+		doSearchButton.setBounds(110, 325, 90, 30);
 		searchFrame.getContentPane().add(doSearchButton);
 		
 		JButton cancelSearchButton = new JButton("Cancel");
 		cancelSearchButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		cancelSearchButton.setBounds(220, 245, 90, 30);
+		cancelSearchButton.setBounds(220, 325, 90, 30);
 		searchFrame.getContentPane().add(cancelSearchButton);
-		searchFrame.setBounds(screenX, screenY, 450, 350);
+		
+		JLabel searchInLabel = new JLabel("Check-In Date");
+		searchInLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		searchInLabel.setForeground(Color.WHITE);
+		searchInLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		searchInLabel.setBounds(50, 230, 120, 30);
+		searchFrame.getContentPane().add(searchInLabel);
+		
+		searchInField = new JTextField();
+		searchInField.setBounds(60, 260, 100, 30);
+		searchFrame.getContentPane().add(searchInField);
+		searchInField.setColumns(10);
+		
+		searchOutField = new JTextField();
+		searchOutField.setColumns(10);
+		searchOutField.setBounds(255, 260, 100, 30);
+		searchFrame.getContentPane().add(searchOutField);
+		
+		JLabel searchOutLabel = new JLabel("Check-Out Date");
+		searchOutLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		searchOutLabel.setForeground(Color.WHITE);
+		searchOutLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		searchOutLabel.setBounds(245, 230, 120, 30);
+		searchFrame.getContentPane().add(searchOutLabel);
+		
+		JLabel dateLabel = new JLabel("(mm/dd/yyyy)");
+		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		dateLabel.setForeground(Color.WHITE);
+		dateLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+		dateLabel.setBounds(160, 260, 95, 30);
+		searchFrame.getContentPane().add(dateLabel);
+		searchFrame.setBounds(screenX, screenY, 425, 420);
 		searchFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		searchFrame.setVisible(true);
 		
@@ -499,6 +539,8 @@ public class HotelGUI {
 				int selectedBeds;
 				boolean optSmoking;
 				boolean optPets;
+				
+				// need to declare dates for search
 				
 				if (guestCombo.getSelectedIndex() == 0) {
 					selectedGuests = 2;
