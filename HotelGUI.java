@@ -1,18 +1,18 @@
 /*
  * GUI class.  This class will provide the interface for our system.
  * Authors: Jason Cain, Van Chadrick Villondo, Marcus Goodwin
- * Date: 05/07/2020
  *
- * Revision 1 (MG): Initial creation
- * Revision 2 (MG): Updated frame titles and commenting
- * Revision 3 (MG): Added check in/out date to search frame & more comments
- * Revision 4 (MG): Added search results frame
+ * Revision 1 (MG, 05/07/2020): Initial creation
+ * Revision 2 (MG, 05/08/2020): Updated frame titles and commenting
+ * Revision 3 (MG, 05/09/2020): Added check in/out date to search frame & more comments
+ * Revision 4 (MG, 05/09/2020): Added search results frame
+ * Revision 5 (MG, 05/09/2020): Reworked action listeners, linked some with RoomManager & cleaned up for submission
  */
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JScrollPane;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.DefaultComboBoxModel;
@@ -22,10 +22,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.SwingConstants;
 
 public class HotelGUI {
@@ -78,13 +84,14 @@ public class HotelGUI {
 	}
 
 	public HotelGUI() {
-		initializeLogin();
+		RoomManager rm = new RoomManager();
+		initializeLogin(rm);
 	}
 
 	/*
 	 *  Show login frame
 	 */
-	private void initializeLogin() {
+	private void initializeLogin(RoomManager rm) {
 		loginFrame = new JFrame();
 		loginFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		loginFrame.setResizable(false);
@@ -142,13 +149,9 @@ public class HotelGUI {
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				// * * * code to be added (validate information through database) * * *
-				
-				
-				if (!userField.getText().equals("") && !pwField.getText().equals("")) { 
-					initializeMenu(); // only logs in if form is not blank
+				// Verify login * * * (needs to be linked with database) * * *
+				if (userField.getText().equals("admin") && pwField.getText().equals("password123")) { 
+					initializeMenu(rm); // Only logs with username: admin and password: password123
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Invalid Information", "Error", JOptionPane.ERROR_MESSAGE);
@@ -160,8 +163,7 @@ public class HotelGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String un = userField.getText();
-				String pw = pwField.getText();
-				initializeRegister(un, pw);
+				initializeRegister(rm, un);
 			}
 		});
 		
@@ -170,7 +172,7 @@ public class HotelGUI {
 	/*
 	 * Show the main menu
 	 */
-	private void initializeMenu() {
+	private void initializeMenu(RoomManager rm) {
 		loginFrame.dispose();
 		hotelFrame = new JFrame();
 		hotelFrame.getContentPane().setBackground(Color.DARK_GRAY);
@@ -209,21 +211,21 @@ public class HotelGUI {
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initializeSearch();
+				initializeSearch(rm);
 			}
 		});
 		
 		bookBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initializeBooking();
+				initializeBooking(rm);
 			}
 		});
 		
 		editBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initializeCancel();
+				initializeCancel(rm);
 			}
 		});
 		
@@ -232,7 +234,7 @@ public class HotelGUI {
 	/*
 	 *  Show register frame
 	 */
-	private void initializeRegister(String user, String pass) {
+	private void initializeRegister(RoomManager rm, String user) {
 		regFrame = new JFrame();
 		regFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		regFrame.getContentPane().setLayout(null);
@@ -285,7 +287,6 @@ public class HotelGUI {
 		passField.setFont(new Font("Arial", Font.PLAIN, 16));
 		passField.setColumns(10);
 		passField.setBounds(140, 125, 125, 30);
-		passField.setText(pass);
 		regFrame.getContentPane().add(passField);
 		
 		firstField = new JTextField();
@@ -358,12 +359,10 @@ public class HotelGUI {
 		registerBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				// * * * code to be added (add registry to database) * * *
-				// create error if registry already exists
-				
+				// Register account * * * (needs to be linked with database) * * *
+				JOptionPane.showMessageDialog(null, "Account Registered!", "Hotel Reservation System", JOptionPane.INFORMATION_MESSAGE);
 				regFrame.dispose();
-				initializeMenu();
+				initializeMenu(rm);
 			}
 		});
 		
@@ -378,7 +377,7 @@ public class HotelGUI {
 	/*
 	 * Show search frame
 	 */
-	private void initializeSearch() {
+	private void initializeSearch(RoomManager rm) {
 		searchFrame = new JFrame();
 		searchFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		searchFrame.getContentPane().setLayout(null);
@@ -441,13 +440,13 @@ public class HotelGUI {
 		searchFrame.getContentPane().add(petLabel);
 		
 		JComboBox smokingCombo = new JComboBox();
-		smokingCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No", "Either"}));
+		smokingCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No"}));
 		smokingCombo.setFont(new Font("Arial", Font.PLAIN, 16));
 		smokingCombo.setBounds(260, 100, 90, 30);
 		searchFrame.getContentPane().add(smokingCombo);
 		
 		JComboBox petCombo = new JComboBox();
-		petCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No", "Either"}));
+		petCombo.setModel(new DefaultComboBoxModel(new String[] {"Yes", "No"}));
 		petCombo.setFont(new Font("Arial", Font.PLAIN, 16));
 		petCombo.setBounds(260, 180, 90, 30);
 		searchFrame.getContentPane().add(petCombo);
@@ -515,7 +514,7 @@ public class HotelGUI {
 				}
 			}
 		});
-		
+		// Only one radio button can be selected at a time
 		radioOne.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -537,12 +536,10 @@ public class HotelGUI {
 		doSearchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedGuests;
-				int selectedBeds;
-				boolean optSmoking;
-				boolean optPets;
-				
-				// * * * need to declare dates for search * * *
+				int selectedGuests = 0;
+				int selectedBeds = 0;
+				boolean optSmoking = false;
+				boolean optPets = false;
 				
 				if (guestCombo.getSelectedIndex() == 0) {
 					selectedGuests = 2;
@@ -572,11 +569,7 @@ public class HotelGUI {
 					optPets = false;
 				}
 				
-				
-				// * * * code to be added (perform search) * * *
-				
-				
-				initializeResults();
+				initializeResults(rm, selectedGuests, selectedBeds, optSmoking, optPets);
 			}
 		});
 		
@@ -591,7 +584,7 @@ public class HotelGUI {
 	/*
 	 * Show reservation booking frame
 	 */
-	private void initializeBooking() {
+	private void initializeBooking(RoomManager rm) {
 		bookingFrame = new JFrame();
 		bookingFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		bookingFrame.getContentPane().setLayout(null);
@@ -719,10 +712,27 @@ public class HotelGUI {
 		reserveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Add room reservation
+				int num = 0;
+				try { 
+					num = Integer.parseInt(rmNumberField.getText());
+				}
+				catch (NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(null, "Invalid Room Number", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 				
-				// * * * code to be added (make sure room is available and add reservation) * * *
-				
-				bookingFrame.dispose();
+				String cI = checkInField.getText();
+				String cO = checkOutField.getText();
+				try {
+					Date checkCI = new SimpleDateFormat("mm/dd/yyyy").parse(cI);
+					Date checkCO = new SimpleDateFormat("mm/dd/yyyy").parse(cO);
+					rm.reserveRoom(num, cI, cO);
+					JOptionPane.showMessageDialog(null, "Room " + num + " Reserved!", "Hotel Reservation System", JOptionPane.INFORMATION_MESSAGE);
+					bookingFrame.dispose();
+				}
+				catch (ParseException pe) {
+					JOptionPane.showMessageDialog(null, "Invalid Dates", "Error", JOptionPane.ERROR_MESSAGE);
+				} 
 			}
 		});
 		
@@ -737,7 +747,7 @@ public class HotelGUI {
 	/*
 	 * Show edit reservation frame
 	 */
-	private void initializeCancel() {
+	private void initializeCancel(RoomManager rm) {
 		cancelFrame = new JFrame();
 		cancelFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		cancelFrame.getContentPane().setLayout(null);
@@ -796,10 +806,18 @@ public class HotelGUI {
 		cancelResBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				// * * * code to be added (make sure reservation is valid & delete it) * * *
-				// create error if reservation is not valid
-				
+				// Delete reservation
+				 if (!userCancelField.getText().equals("") && !roomCancelField.getText().equals("")) {
+				 	try { 
+				 		int roomToDelete = Integer.parseInt(roomCancelField.getText());
+						rm.checkOutRoom(roomToDelete);
+						JOptionPane.showMessageDialog(null, "Reservation Canceled", "Hotel Reservation System", JOptionPane.INFORMATION_MESSAGE);
+						cancelFrame.dispose();
+					}
+					catch (NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(null, "Invalid Room Number", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				 }
 			}
 		});
 		cancelMenuBtn.addActionListener(new ActionListener() {
@@ -813,7 +831,7 @@ public class HotelGUI {
 	/*
 	 * Show search results frame
 	 */
-	private void initializeResults() {
+	private void initializeResults(RoomManager rm, int guests, int beds, boolean smoking, boolean pets) {
 		resultsFrame = new JFrame();
 		resultsFrame.getContentPane().setBackground(Color.DARK_GRAY);
 		resultsFrame.getContentPane().setLayout(null);
@@ -831,7 +849,20 @@ public class HotelGUI {
 		JTextPane resultsList = new JTextPane();
 		resultsList.setEditable(false);
 		
-		resultsList.setText(""); // * * * search results should be displayed here * * *
+		// Search for available rooms
+		int[] roomList = rm.systemSearch(guests, beds, smoking, pets);
+		String roomString = "";
+		for (int i = 0; i < roomList.length; i++) {
+			if (roomList[i] != 0) {
+				roomString += "Room " + roomList[i] + "\n";
+			}
+		}
+		if (roomString != "") {
+			resultsList.setText(roomString);
+		}
+		else {
+			resultsList.setText("No Available Rooms");
+		}
 		
 		resultsList.setFont(new Font("Arial", Font.PLAIN, 14));
 		resultsScrollPane.setViewportView(resultsList);
@@ -858,7 +889,7 @@ public class HotelGUI {
 			public void actionPerformed(ActionEvent e) {
 				searchFrame.dispose();
 				resultsFrame.dispose();
-				initializeBooking();
+				initializeBooking(rm);
 			}
 		});
 		
@@ -868,6 +899,5 @@ public class HotelGUI {
 				resultsFrame.dispose();
 			}
 		});
-		
 	}
 }
